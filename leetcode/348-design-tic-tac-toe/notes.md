@@ -51,22 +51,41 @@ toe.move(2, 1, 1); -> Returns 1 (player 1 wins)
 |X|X|X|
 ```
 
-## (Rant) O(1) Solution
+## O(n) Time Solution
 
-This is supposed to be an object-oriented design question, but on LeetCode it ends up being just another algorithm problem that prioritizes optimal time complexity, rather than good design.
-
-There is an `O(1)` solution, and it is very counter-intuitive in my opinion – assuming this is a design question. Here’s a good explanation of how it works:
-
-https://leetcode.com/problems/design-tic-tac-toe/discuss/81898/Java-O(1)-solution-easy-to-understand
-
-For extra credit, it’s great practice to add additional constraints to the problem. For example:
-- Keep track of whose turn it is.
-- Check move validity.
-
-## O(n) Solution
-
-The solution I came up with runs in `O(n)` and is very straightforward. We keep a copy of the matrix (so `O(n^2)` space), and when a `move` is placed, we look in all directions from the position of that move.
+The `O(n)` solution is contained within `bruteForce.js` and should be very straightforward. We keep a copy of the matrix (so `O(n^2)` space), and when a `move` is placed, we look in all directions from the position of that move.
 
 The time complexity ends up being `~O(n)` as there 8 such searches every time, with a worst case time of `O(n)`.
 
-Though on a real board, in a real game, the algorithm will perform much better on average and get slower as the game goes on – but never worse than `O(n)`.
+On a real board, in a real game, the algorithm will perform much better on average and get slower as the game goes on – but never worse than `O(n)`.
+
+## O(1) Time Solution
+
+I wouldn’t really expect anyone to come up with this on the spot, but after leaving the problem to sit in the back of my head for a couple of days, it clicked.
+
+Let’s take our board from the problem example, but replace `X` with `1` and `O` with `-1`
+```
+| 1  |    | -1 |
+| -1 | -1 |    |
+| 1  |  1 |  1 |
+```
+
+There is a rather intuitive way to compress this information:
+- If we look at the rows from top to bottom, their sum is: `[0, -2, 3]`
+- If we look at the columns from left to right, their sum is: `[1, 0, 0]`
+- The sum of the diagonal is `1`
+- The sum of the ant-diagonal is `-1`
+
+So if we update these 4 values based on the `move(i, j)` that was just made, all we have to ask is:
+- Is the sum of `i-th` row now equal to the win condition?
+- Is the sum of `j-th` column now equal to the win condition?
+- Is the sum of diagonal now equal to the win condition?
+- Is the sum of anti-diagonal now equal to the win condition?
+
+If any of them is true, then the player has just placed a winning move!
+
+Aside from being a much faster solution, it also eliminates any need for keeping the whole matrix, so our space complexity has dropped to just `O(n)` for the two arrays.
+
+### Performance Comparison via LeetCode Judge
+- `O(n) time`: 220ms runtime
+- `O(1) time`: 96ms runtime

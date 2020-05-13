@@ -1,4 +1,4 @@
-import TicTacToe from './index';
+import TicTacToe from './optimized';
 
 describe(('TicTacToe'), () => {
   test('n=3, easy victory via columns', () => {

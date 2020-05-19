@@ -25,9 +25,11 @@ counter.getHits(301); // get hits at timestamp 301, should return 3.
 ## Solution
 
 The solution included in the repo is fairly slow:
-
 ```
-Runtime: 76 ms, faster than 12.64% of JavaScript online submissions for Design Hit Counter.
+Runtime: 64 ms, faster than 19.77% of JavaScript online submissions for Design Hit Counter.
 Memory Usage: 34 MB, less than 50.00% of JavaScript online submissions for Design Hit Counter.
 ```
 
+What it has going for it is a limited memory growth – unlike many of the fast solution on LC, it can be left running for days. Still, I’m sure there’s some way to implement this better.
+
+In the real world, we would likely aggregate the hits based on hours/days and store them in an efficient data store for historical querying, while keeping the data for the last 5-10 minutes in a local hashmap for fast querying for current data.
